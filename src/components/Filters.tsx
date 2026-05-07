@@ -1,0 +1,244 @@
+"use client";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition, useEffect } from "react";
+import type { Facets, Filters as FiltersT } from "@/lib/types";
+import { cn } from "@/lib/cn";
+
+export function Filters({
+  facets,
+  initial,
+}: {
+  facets: Facets;
+  initial: FiltersT;
+}) {
+  const router = useRouter();
+  const sp = useSearchParams();
+  const [, startTransition] = useTransition();
+  const [q, setQ] = useState(initial.q ?? "");
+  const [minWeight, setMinWeight] = useState(initial.minWeight ?? facets.weightRange.min);
+  const [maxWeight, setMaxWeight] = useState(initial.maxWeight ?? facets.weightRange.max);
+  const [players, setPlayers] = useState<number | "">(
+    initial.minPlayers ?? initial.maxPlayers ?? ""
+  );
+  const [maxTime, setMaxTime] = useState<number | "">(initial.maxTime ?? "");
+  const [cats, setCats] = useState<Set<string>>(new Set(initial.categories ?? []));
+  const [mechs, setMechs] = useState<Set<string>>(new Set(initial.mechanics ?? []));
+  const [sort, setSort] = useState<FiltersT["sort"]>(initial.sort);
+
+  function apply(extra?: Partial<Record<string, string>>) {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (minWeight !== facets.weightRange.min) params.set("minWeight", String(minWeight));
+    if (maxWeight !== facets.weightRange.max) params.set("maxWeight", String(maxWeight));
+    if (players !== "") {
+      params.set("minPlayers", String(players));
+      params.set("maxPlayers", String(players));
+    }
+    if (maxTime !== "") params.set("maxTime", String(maxTime));
+    if (cats.size) params.set("cat", [...cats].join(","));
+    if (mechs.size) params.set("mech", [...mechs].join(","));
+    if (sort !== "bayes") params.set("sort", sort);
+    if (extra) for (const [k, v] of Object.entries(extra)) v ? params.set(k, v) : params.delete(k);
+    startTransition(() => router.push(`/?${params.toString()}`));
+  }
+
+  // Apply on debounced search-text change
+  useEffect(() => {
+    const t = setTimeout(() => apply(), 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
+
+  return (
+    <div className="space-y-5 sticky top-20">
+      <div>
+        <label className="text-xs uppercase tracking-wider text-ink-faint">
+          Search
+        </label>
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Wingspan, Catan…"
+          className="mt-1 w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm focus:outline-none focus:border-accent/60"
+        />
+      </div>
+
+      <FilterBlock title="Sort">
+        <select
+          value={sort}
+          onChange={(e) => {
+            const v = e.target.value as FiltersT["sort"];
+            setSort(v);
+            // Apply immediately
+            const params = new URLSearchParams(sp.toString());
+            v === "bayes" ? params.delete("sort") : params.set("sort", v);
+            startTransition(() => router.push(`/?${params.toString()}`));
+          }}
+          className="w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm"
+        >
+          <option value="bayes">Bayesian rating</option>
+          <option value="consensus">Consensus (low variance first)</option>
+          <option value="weight">Weight (light → heavy)</option>
+          <option value="year">Year (newest first)</option>
+        </select>
+      </FilterBlock>
+
+      <FilterBlock title="Weight">
+        <div className="flex items-center gap-2 text-xs text-ink-dim">
+          <span className="w-6 text-right">{minWeight.toFixed(1)}</span>
+          <input
+            type="range"
+            min={facets.weightRange.min}
+            max={facets.weightRange.max}
+            step={0.1}
+            value={minWeight}
+            onChange={(e) => setMinWeight(Number(e.target.value))}
+            onMouseUp={() => apply()}
+            onTouchEnd={() => apply()}
+            className="flex-1 accent-accent"
+          />
+        </div>
+        <div className="flex items-center gap-2 text-xs text-ink-dim">
+          <span className="w-6 text-right">{maxWeight.toFixed(1)}</span>
+          <input
+            type="range"
+            min={facets.weightRange.min}
+            max={facets.weightRange.max}
+            step={0.1}
+            value={maxWeight}
+            onChange={(e) => setMaxWeight(Number(e.target.value))}
+            onMouseUp={() => apply()}
+            onTouchEnd={() => apply()}
+            className="flex-1 accent-accent"
+          />
+        </div>
+        <p className="text-xs text-ink-faint mt-1">
+          1.0 = light · 5.0 = heavy
+        </p>
+      </FilterBlock>
+
+      <FilterBlock title="Players (exact)">
+        <div className="flex gap-1.5 flex-wrap">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => {
+                const next = players === n ? "" : n;
+                setPlayers(next);
+                setTimeout(apply, 0);
+              }}
+              className={cn(
+                "px-2.5 py-1 rounded-md text-sm border",
+                players === n
+                  ? "bg-accent text-bg border-accent"
+                  : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
+              )}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </FilterBlock>
+
+      <FilterBlock title="Max playtime (min)">
+        <div className="flex gap-1.5 flex-wrap">
+          {[30, 45, 60, 90, 120, 180].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => {
+                const next = maxTime === n ? "" : n;
+                setMaxTime(next);
+                setTimeout(apply, 0);
+              }}
+              className={cn(
+                "px-2.5 py-1 rounded-md text-sm border",
+                maxTime === n
+                  ? "bg-accent text-bg border-accent"
+                  : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
+              )}
+            >
+              ≤{n}
+            </button>
+          ))}
+        </div>
+      </FilterBlock>
+
+      <FilterBlock title="Categories">
+        <ChipList
+          items={facets.categories}
+          selected={cats}
+          onToggle={(name) => {
+            const next = new Set(cats);
+            next.has(name) ? next.delete(name) : next.add(name);
+            setCats(next);
+            setTimeout(apply, 0);
+          }}
+        />
+      </FilterBlock>
+
+      <FilterBlock title="Mechanics">
+        <ChipList
+          items={facets.mechanics}
+          selected={mechs}
+          onToggle={(name) => {
+            const next = new Set(mechs);
+            next.has(name) ? next.delete(name) : next.add(name);
+            setMechs(next);
+            setTimeout(apply, 0);
+          }}
+        />
+      </FilterBlock>
+
+      <button
+        onClick={() => {
+          startTransition(() => router.push("/"));
+        }}
+        className="text-xs text-ink-dim hover:text-ink"
+      >
+        Reset all filters
+      </button>
+    </div>
+  );
+}
+
+function FilterBlock({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h4 className="text-xs uppercase tracking-wider text-ink-faint mb-1.5">{title}</h4>
+      <div className="space-y-1.5">{children}</div>
+    </div>
+  );
+}
+
+function ChipList({
+  items,
+  selected,
+  onToggle,
+}: {
+  items: { name: string; count: number }[];
+  selected: Set<string>;
+  onToggle: (name: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5 max-h-44 overflow-auto pr-1">
+      {items.map(({ name, count }) => (
+        <button
+          key={name}
+          onClick={() => onToggle(name)}
+          className={cn(
+            "px-2 py-0.5 rounded-full text-xs border",
+            selected.has(name)
+              ? "bg-accent text-bg border-accent"
+              : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
+          )}
+        >
+          {name}
+          <span className="ml-1 text-[10px] opacity-60">{count}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
