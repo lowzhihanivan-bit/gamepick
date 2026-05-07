@@ -20,7 +20,6 @@ export default function RootLayout({
             <a href="/" className="flex items-center gap-2">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-accent" />
               <span className="font-semibold tracking-tight">GamePick</span>
-              <span className="text-ink-faint text-sm">— pick the right game</span>
             </a>
             <nav className="text-sm text-ink-dim flex gap-5">
               <a href="/" className="hover:text-ink">Browse</a>

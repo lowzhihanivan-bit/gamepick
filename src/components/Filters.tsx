@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import type { Facets, Filters as FiltersT } from "@/lib/types";
 import { cn } from "@/lib/cn";
+
+type Suggestion = { bggId: number; name: string; year: number | null };
 
 export function Filters({
   facets,
@@ -16,6 +18,9 @@ export function Filters({
   const sp = useSearchParams();
   const [, startTransition] = useTransition();
   const [q, setQ] = useState(initial.q ?? "");
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [showSugg, setShowSugg] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const [minWeight, setMinWeight] = useState(initial.minWeight ?? facets.weightRange.min);
   const [maxWeight, setMaxWeight] = useState(initial.maxWeight ?? facets.weightRange.max);
   const [players, setPlayers] = useState<number | "">(
@@ -50,18 +55,60 @@ export function Filters({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
 
+  // Fetch autocomplete suggestions
+  useEffect(() => {
+    if (q.trim().length < 2) { setSuggestions([]); return; }
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/suggest?q=${encodeURIComponent(q.trim())}`);
+        const data = await res.json();
+        setSuggestions(data);
+        setShowSugg(true);
+      } catch { /* ignore */ }
+    }, 150);
+    return () => clearTimeout(t);
+  }, [q]);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSugg(false);
+      }
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
   return (
     <div className="space-y-5 sticky top-20">
-      <div>
+      <div ref={searchRef} className="relative">
         <label className="text-xs uppercase tracking-wider text-ink-faint">
           Search
         </label>
         <input
           value={q}
-          onChange={(e) => setQ(e.target.value)}
+          onChange={(e) => { setQ(e.target.value); setShowSugg(true); }}
+          onFocus={() => suggestions.length > 0 && setShowSugg(true)}
           placeholder="Wingspan, Catan…"
           className="mt-1 w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm focus:outline-none focus:border-accent/60"
         />
+        {showSugg && suggestions.length > 0 && (
+          <ul className="absolute z-50 mt-1 w-full rounded-lg border border-white/10 bg-bg-soft shadow-lg overflow-hidden">
+            {suggestions.map((s) => (
+              <li key={s.bggId}>
+                <a
+                  href={`/games/${s.bggId}`}
+                  className="flex items-baseline justify-between px-3 py-2 text-sm hover:bg-white/5"
+                  onClick={() => setShowSugg(false)}
+                >
+                  <span>{s.name}</span>
+                  {s.year && <span className="text-xs text-ink-faint ml-2 shrink-0">{s.year}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <FilterBlock title="Sort">
