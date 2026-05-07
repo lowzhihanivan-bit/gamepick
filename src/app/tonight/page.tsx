@@ -2,9 +2,10 @@ import { listGames } from "@/lib/queries";
 import { GameCard } from "@/components/GameCard";
 import { MoodPicker } from "@/components/MoodPicker";
 import { SessionSetup } from "@/components/SessionSetup";
+import { Pagination } from "@/components/Pagination";
 import type { Filters as FiltersT } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+const PAGE_SIZE = 30;
 
 function parseSearch(sp: Record<string, string | string[] | undefined>): FiltersT {
   const num = (k: string) => {
@@ -37,6 +38,9 @@ export default async function TonightPage({
 }) {
   const sp = await searchParams;
   const filters = parseSearch(sp);
+  const spString = new URLSearchParams(
+    Object.fromEntries(Object.entries(sp).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v ?? ""]))
+  ).toString();
   const { rows, total } = await listGames(filters);
 
   const hasSession =
@@ -74,11 +78,20 @@ export default async function TonightPage({
           <p className="text-ink-dim text-sm mt-2">Try loosening the mood or session settings.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {rows.map((g) => (
-            <GameCard key={g.id} game={g} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            {rows.map((g) => (
+              <GameCard key={g.id} game={g} />
+            ))}
+          </div>
+          <Pagination
+            page={filters.page}
+            total={total}
+            pageSize={PAGE_SIZE}
+            basePath="/tonight"
+            searchParamsString={spString}
+          />
+        </>
       )}
     </div>
   );

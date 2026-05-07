@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import type { Filters, Facets, GameRow } from "./types";
 import { moodToSql } from "./moods";
@@ -140,7 +141,7 @@ export async function getGameByBggId(bggId: number): Promise<GameRow | null> {
   return (result.rows[0] as unknown as GameRow) ?? null;
 }
 
-export async function listFacets(): Promise<Facets> {
+export const listFacets = unstable_cache(async function _listFacets(): Promise<Facets> {
   const result = await db.execute(
     `SELECT categories_json, mechanics_json, weight FROM games`
   );
@@ -178,7 +179,7 @@ export async function listFacets(): Promise<Facets> {
       max: Number.isFinite(wMax) ? Math.ceil(wMax * 10) / 10 : 5,
     },
   };
-}
+}, ["facets"], { revalidate: 3600 });
 
 function safeAdd(map: Map<string, number>, json: string | null) {
   if (!json) return;

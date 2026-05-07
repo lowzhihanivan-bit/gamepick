@@ -1,9 +1,10 @@
 import { listGames, listFacets } from "@/lib/queries";
 import { Filters } from "@/components/Filters";
 import { GameCard } from "@/components/GameCard";
+import { Pagination } from "@/components/Pagination";
 import type { Filters as FiltersT } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+const PAGE_SIZE = 30;
 
 function parseSearch(sp: Record<string, string | string[] | undefined>): FiltersT {
   const num = (k: string) => {
@@ -44,6 +45,9 @@ export default async function Home({
 }) {
   const sp = await searchParams;
   const filters = parseSearch(sp);
+  const spString = new URLSearchParams(
+    Object.fromEntries(Object.entries(sp).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v ?? ""]))
+  ).toString();
   const [facets, { rows, total }] = await Promise.all([
     listFacets(),
     listGames(filters),
@@ -66,11 +70,20 @@ export default async function Home({
         {rows.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {rows.map((g) => (
-              <GameCard key={g.id} game={g} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              {rows.map((g) => (
+                <GameCard key={g.id} game={g} />
+              ))}
+            </div>
+            <Pagination
+              page={filters.page}
+              total={total}
+              pageSize={PAGE_SIZE}
+              basePath="/"
+              searchParamsString={spString}
+            />
+          </>
         )}
       </section>
     </div>
