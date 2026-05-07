@@ -88,6 +88,8 @@ export default async function Home({
 
 function labelForSort(s: FiltersT["sort"]) {
   switch (s) {
+    case "match":
+      return "best match for your session";
     case "bayes":
       return "Bayesian rating";
     case "consensus":

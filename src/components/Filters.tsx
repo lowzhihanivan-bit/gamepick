@@ -38,7 +38,7 @@ export function Filters({
     if (maxTime !== "") params.set("maxTime", String(maxTime));
     if (cats.size) params.set("cat", [...cats].join(","));
     if (mechs.size) params.set("mech", [...mechs].join(","));
-    if (sort !== "bayes") params.set("sort", sort);
+    if (sort !== "bayes") params.set("sort", String(sort));
     if (extra) for (const [k, v] of Object.entries(extra)) v ? params.set(k, v) : params.delete(k);
     startTransition(() => router.push(`/?${params.toString()}`));
   }
@@ -77,6 +77,7 @@ export function Filters({
           }}
           className="w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm"
         >
+          <option value="match">Best match for my session</option>
           <option value="bayes">Bayesian rating</option>
           <option value="consensus">Consensus (low variance first)</option>
           <option value="weight">Weight (light → heavy)</option>

@@ -1,4 +1,4 @@
-export type SortKey = "bayes" | "consensus" | "weight" | "year";
+export type SortKey = "bayes" | "consensus" | "weight" | "year" | "match";
 
 export type Filters = {
   q?: string;

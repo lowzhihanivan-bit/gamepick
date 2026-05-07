@@ -9,11 +9,10 @@ export default function About() {
 
       <h2 className="text-lg mt-6">How ratings work</h2>
       <p className="text-sm text-ink-dim leading-relaxed mt-2">
-        Each game gets a <em>Bayesian-weighted score</em> rather than a raw average.
-        A title with a 9.5 from 30 voters is trusted less than a 8.4 from 50,000
-        voters — the Bayesian formula pulls low-vote games toward the catalog
-        average. Confidence (the bar under the score) reflects how many ratings
-        the score is built on.
+        Each game gets a <em>Bayesian-weighted score</em> rather than a raw average —
+        a game rated 9.5 by 20 people ranks below one rated 8.2 by 50,000, because
+        volume of votes is what makes a rating trustworthy. Games with few ratings
+        are pulled toward the catalog average until they earn enough votes to prove themselves.
       </p>
 
       <h2 className="text-lg mt-6">Player consensus</h2>

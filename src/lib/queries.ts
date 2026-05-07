@@ -57,19 +57,34 @@ export async function listGames(f: Filters): Promise<{ rows: GameRow[]; total: n
     }
   }
 
-  const orderBy = (() => {
-    switch (f.sort) {
-      case "consensus":
-        return "consensus ASC NULLS LAST, bayes_avg DESC NULLS LAST";
-      case "weight":
-        return "weight ASC NULLS LAST, bayes_avg DESC NULLS LAST";
-      case "year":
-        return "year_published DESC NULLS LAST, bayes_avg DESC NULLS LAST";
-      case "bayes":
-      default:
-        return "bayes_avg DESC NULLS LAST, num_ratings DESC NULLS LAST";
-    }
-  })();
+  let orderBy: string;
+  if (f.sort === "match") {
+    params._mp = f.minPlayers ?? null;
+    params._mt = f.maxTime ?? null;
+    params._mw = f.maxWeight ?? null;
+    orderBy = `(
+      COALESCE(CASE WHEN :_mp IS NOT NULL AND min_players IS NOT NULL AND max_players IS NOT NULL
+        AND min_players <= :_mp AND max_players >= :_mp THEN 3.0 ELSE 0.0 END, 0.0) +
+      COALESCE(CASE WHEN :_mt IS NOT NULL AND max_playtime IS NOT NULL AND CAST(:_mt AS REAL) > 0
+        THEN 2.0 * (1.0 - CAST(max_playtime AS REAL) / CAST(:_mt AS REAL)) ELSE 0.0 END, 0.0) +
+      COALESCE(CASE WHEN :_mw IS NOT NULL AND weight IS NOT NULL AND CAST(:_mw AS REAL) > 0
+        THEN 2.0 * (1.0 - weight / CAST(:_mw AS REAL)) ELSE 0.0 END, 0.0)
+    ) DESC, bayes_avg DESC NULLS LAST`;
+  } else {
+    orderBy = (() => {
+      switch (f.sort) {
+        case "consensus":
+          return "consensus ASC NULLS LAST, bayes_avg DESC NULLS LAST";
+        case "weight":
+          return "weight ASC NULLS LAST, bayes_avg DESC NULLS LAST";
+        case "year":
+          return "year_published DESC NULLS LAST, bayes_avg DESC NULLS LAST";
+        case "bayes":
+        default:
+          return "bayes_avg DESC NULLS LAST, num_ratings DESC NULLS LAST";
+      }
+    })();
+  }
 
   const whereSql = where.join(" AND ");
 
