@@ -41,7 +41,7 @@ export function GameCard({ game }: { game: GameRow }) {
             no image
           </div>
         )}
-        <div className="absolute top-2 right-2 px-2 py-1 rounded-md bg-black/60 backdrop-blur text-xs font-mono">
+        <div className="absolute top-2 right-2 px-2 py-1 rounded-md bg-black/60 backdrop-blur text-white text-xs font-mono">
           {fmtScore(game.bayesAvg ?? game.rawAvg)}
         </div>
       </div>
