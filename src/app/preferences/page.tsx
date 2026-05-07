@@ -3,8 +3,8 @@ import { PreferencesForm } from "@/components/PreferencesForm";
 
 export const dynamic = "force-dynamic";
 
-export default function PreferencesPage() {
-  const facets = listFacets();
+export default async function PreferencesPage() {
+  const facets = await listFacets();
   return (
     <div className="max-w-3xl">
       <h1 className="text-2xl font-semibold tracking-tight">My preferences</h1>
