@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { MOODS } from "@/lib/moods";
 import { cn } from "@/lib/cn";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 export function MoodPicker({ activeMood }: { activeMood?: string }) {
   const router = useRouter();
   const sp = useSearchParams();
+  const pathname = usePathname();
   const [, startTransition] = useTransition();
 
   function pick(id: string) {
@@ -18,7 +19,7 @@ export function MoodPicker({ activeMood }: { activeMood?: string }) {
       params.set("mood", id);
       params.delete("page");
     }
-    startTransition(() => router.push(`/?${params.toString()}`));
+    startTransition(() => router.push(`${pathname}?${params.toString()}`));
   }
 
   return (
@@ -52,7 +53,7 @@ export function MoodPicker({ activeMood }: { activeMood?: string }) {
         <p className="text-xs text-ink-faint mt-2">
           {MOODS.find((m) => m.id === activeMood)?.desc} ·{" "}
           <button
-            onClick={() => pick(activeMood)}
+            onClick={() => pick(activeMood!)}
             className="text-accent hover:underline"
           >
             clear

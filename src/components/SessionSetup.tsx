@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { cn } from "@/lib/cn";
 import {
@@ -38,6 +38,7 @@ export function SessionSetup({
 }) {
   const router = useRouter();
   const sp = useSearchParams();
+  const pathname = usePathname();
   const [, startTransition] = useTransition();
 
   const activePlayers = initialPlayers;
@@ -93,7 +94,7 @@ export function SessionSetup({
       weightBand: newBand,
     });
 
-    startTransition(() => router.push(`/?${params.toString()}`));
+    startTransition(() => router.push(`${pathname}?${params.toString()}`));
   }
 
   function reset() {
@@ -105,7 +106,7 @@ export function SessionSetup({
     params.delete("minWeight");
     params.delete("maxWeight");
     params.delete("page");
-    startTransition(() => router.push(`/?${params.toString()}`));
+    startTransition(() => router.push(`${pathname}?${params.toString()}`));
   }
 
   return (

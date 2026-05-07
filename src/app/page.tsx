@@ -1,8 +1,6 @@
 import { listGames, listFacets } from "@/lib/queries";
 import { Filters } from "@/components/Filters";
 import { GameCard } from "@/components/GameCard";
-import { MoodPicker } from "@/components/MoodPicker";
-import { SessionSetup } from "@/components/SessionSetup";
 import type { Filters as FiltersT } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -57,13 +55,6 @@ export default async function Home({
         <Filters facets={facets} initial={filters} />
       </aside>
       <section className="col-span-12 md:col-span-9">
-        <MoodPicker activeMood={filters.mood} />
-        <SessionSetup
-          initialPlayers={filters.minPlayers}
-          initialMaxTime={filters.maxTime}
-          initialMinWeight={filters.minWeight}
-          initialMaxWeight={filters.maxWeight}
-        />
         <div className="flex items-baseline justify-between mb-4">
           <h1 className="text-2xl font-semibold tracking-tight">
             {total.toLocaleString()} games
@@ -88,8 +79,6 @@ export default async function Home({
 
 function labelForSort(s: FiltersT["sort"]) {
   switch (s) {
-    case "match":
-      return "best match for your session";
     case "bayes":
       return "Bayesian rating";
     case "consensus":

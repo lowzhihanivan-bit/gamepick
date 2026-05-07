@@ -77,7 +77,6 @@ export function Filters({
           }}
           className="w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm"
         >
-          <option value="match">Best match for my session</option>
           <option value="bayes">Bayesian rating</option>
           <option value="consensus">Consensus (low variance first)</option>
           <option value="weight">Weight (light → heavy)</option>

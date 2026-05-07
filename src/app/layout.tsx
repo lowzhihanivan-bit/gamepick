@@ -24,6 +24,7 @@ export default function RootLayout({
             </a>
             <nav className="text-sm text-ink-dim flex gap-5">
               <a href="/" className="hover:text-ink">Browse</a>
+              <a href="/tonight" className="hover:text-ink">Tonight</a>
               <a href="/about" className="hover:text-ink">About</a>
             </nav>
           </div>
