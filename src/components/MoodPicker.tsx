@@ -40,7 +40,7 @@ export function MoodPicker({ activeMood }: { activeMood?: string }) {
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors",
                 active
                   ? "bg-accent text-bg border-accent font-medium"
-                  : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/50 hover:text-ink"
+                  : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/50 hover:text-ink"
               )}
             >
               <span>{m.emoji}</span>

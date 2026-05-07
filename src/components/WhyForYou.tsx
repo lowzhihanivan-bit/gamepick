@@ -61,7 +61,7 @@ export function WhyForYou(props: {
 
   if (!hasAnyPref) {
     return (
-      <section className="mt-6 rounded-xl border border-dashed border-white/10 p-4">
+      <section className="mt-6 rounded-xl border border-dashed border-black/10 p-4">
         <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-1">
           Why this might be for you
         </h2>
@@ -88,7 +88,7 @@ export function WhyForYou(props: {
       : { label: "Probably not for you", tone: "bad" as const };
 
   return (
-    <section className="mt-6 rounded-xl border border-white/5 bg-bg-soft p-4">
+    <section className="mt-6 rounded-xl border border-black/8 bg-bg-soft p-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm uppercase tracking-wider text-ink-faint">
           Why this might be for you
