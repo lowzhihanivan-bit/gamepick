@@ -58,10 +58,11 @@ export async function listGames(f: Filters): Promise<{ rows: GameRow[]; total: n
   }
 
   let orderBy: string;
+  const matchParams: Record<string, InValue> = {};
   if (f.sort === "match") {
-    params._mp = f.minPlayers ?? null;
-    params._mt = f.maxTime ?? null;
-    params._mw = f.maxWeight ?? null;
+    matchParams._mp = f.minPlayers ?? null;
+    matchParams._mt = f.maxTime ?? null;
+    matchParams._mw = f.maxWeight ?? null;
     orderBy = `(
       COALESCE(CASE WHEN :_mp IS NOT NULL AND min_players IS NOT NULL AND max_players IS NOT NULL
         AND min_players <= :_mp AND max_players >= :_mp THEN 3.0 ELSE 0.0 END, 0.0) +
@@ -112,7 +113,7 @@ export async function listGames(f: Filters): Promise<{ rows: GameRow[]; total: n
        WHERE ${whereSql}
        ORDER BY ${orderBy}
        LIMIT ${PAGE_SIZE} OFFSET ${offset}`,
-    args: params,
+    args: { ...params, ...matchParams },
   });
 
   const rows = dataResult.rows as unknown as GameRow[];
