@@ -40,7 +40,7 @@ export function Pagination({
               "px-3 py-1.5 rounded-lg text-sm border transition-colors",
               p === page
                 ? "bg-accent text-bg border-accent font-medium"
-                : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/40"
+                : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
             )}
           >
             {p}
@@ -58,7 +58,7 @@ function NavLink({ href, label }: { href: string | null; label: string }) {
   return (
     <a
       href={href}
-      className="px-3 py-1.5 rounded-lg text-sm border border-black/8 bg-bg-soft text-ink-dim hover:border-accent/40 transition-colors"
+      className="px-3 py-1.5 rounded-lg text-sm border border-white/5 bg-bg-soft text-ink-dim hover:border-accent/40 transition-colors"
     >
       {label}
     </a>

@@ -91,15 +91,15 @@ export function Filters({
           onChange={(e) => { setQ(e.target.value); setShowSugg(true); }}
           onFocus={() => suggestions.length > 0 && setShowSugg(true)}
           placeholder="Wingspan, Catan…"
-          className="mt-1 w-full rounded-lg bg-bg-soft border border-black/8 px-3 py-2 text-sm focus:outline-none focus:border-accent/60"
+          className="mt-1 w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm focus:outline-none focus:border-accent/60"
         />
         {showSugg && suggestions.length > 0 && (
-          <ul className="absolute z-50 mt-1 w-full rounded-lg border border-black/10 bg-bg-soft shadow-lg overflow-hidden">
+          <ul className="absolute z-50 mt-1 w-full rounded-lg border border-white/10 bg-bg-soft shadow-lg overflow-hidden">
             {suggestions.map((s) => (
               <li key={s.bggId}>
                 <a
                   href={`/games/${s.bggId}`}
-                  className="flex items-baseline justify-between px-3 py-2 text-sm hover:bg-black/5"
+                  className="flex items-baseline justify-between px-3 py-2 text-sm hover:bg-white/5"
                   onClick={() => setShowSugg(false)}
                 >
                   <span>{s.name}</span>
@@ -122,7 +122,7 @@ export function Filters({
             v === "bayes" ? params.delete("sort") : params.set("sort", v);
             startTransition(() => router.push(`/?${params.toString()}`));
           }}
-          className="w-full rounded-lg bg-bg-soft border border-black/8 px-3 py-2 text-sm"
+          className="w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm"
         >
           <option value="bayes">Bayesian rating</option>
           <option value="consensus">Consensus (low variance first)</option>
@@ -180,7 +180,7 @@ export function Filters({
                 "px-2.5 py-1 rounded-md text-sm border",
                 players === n
                   ? "bg-accent text-bg border-accent"
-                  : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/40"
+                  : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
               )}
             >
               {n}
@@ -204,7 +204,7 @@ export function Filters({
                 "px-2.5 py-1 rounded-md text-sm border",
                 maxTime === n
                   ? "bg-accent text-bg border-accent"
-                  : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/40"
+                  : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
               )}
             >
               ≤{n}
@@ -279,7 +279,7 @@ function ChipList({
             "px-2 py-0.5 rounded-full text-xs border",
             selected.has(name)
               ? "bg-accent text-bg border-accent"
-              : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/40"
+              : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
           )}
         >
           {name}

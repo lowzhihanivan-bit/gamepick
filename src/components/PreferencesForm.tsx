@@ -70,7 +70,7 @@ export function PreferencesForm({ facets }: { facets: Facets }) {
                 "px-3 py-1 rounded-md text-sm border",
                 prefs.preferredPlayers === n
                   ? "bg-accent text-bg border-accent"
-                  : "bg-bg-soft border-black/8 hover:border-accent/40"
+                  : "bg-bg-soft border-white/5 hover:border-accent/40"
               )}
             >
               {n == null ? "any" : `${n} players`}
@@ -90,7 +90,7 @@ export function PreferencesForm({ facets }: { facets: Facets }) {
                 "px-3 py-1 rounded-md text-sm border",
                 prefs.preferredTimeMax === t
                   ? "bg-accent text-bg border-accent"
-                  : "bg-bg-soft border-black/8 hover:border-accent/40"
+                  : "bg-bg-soft border-white/5 hover:border-accent/40"
               )}
             >
               {t == null ? "any" : `≤${t} min`}
@@ -119,7 +119,7 @@ export function PreferencesForm({ facets }: { facets: Facets }) {
           onToggle={(v) => toggleList("dislikedCategories", v)} tone="dislike" />
       </Section>
 
-      <div className="flex items-center justify-between pt-4 border-t border-black/8">
+      <div className="flex items-center justify-between pt-4 border-t border-white/5">
         <span className="text-xs text-ink-faint">
           {saved ? "Saved" : "Saved automatically as you change."}
         </span>
@@ -170,7 +170,7 @@ function NumberPick({
         onChange={(e) =>
           onChange(e.target.value === "" ? undefined : Number(e.target.value))
         }
-        className="mt-1 rounded-md bg-bg-soft border border-black/8 px-2 py-1 text-sm"
+        className="mt-1 rounded-md bg-bg-soft border border-white/5 px-2 py-1 text-sm"
       >
         {options.map((v) => (
           <option key={String(v)} value={v == null ? "" : String(v)}>
@@ -207,7 +207,7 @@ function ChipPicker({
                 ? tone === "like"
                   ? "bg-ok/20 border-ok/60 text-ok"
                   : "bg-bad/20 border-bad/60 text-bad"
-                : "bg-bg-soft border-black/8 text-ink-dim hover:border-accent/40"
+                : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
             )}
           >
             {name} <span className="opacity-60">{count}</span>

@@ -19,7 +19,7 @@ export function ScoreBreakdown({ game }: { game: GameRow }) {
 
   return (
     <div className="mt-5 grid grid-cols-2 gap-3">
-      <div className="rounded-xl border border-black/8 bg-bg-soft p-4">
+      <div className="rounded-xl border border-white/5 bg-bg-soft p-4">
         <div className="text-[11px] uppercase tracking-wider text-ink-faint">
           Bayesian rating
         </div>
@@ -38,7 +38,7 @@ export function ScoreBreakdown({ game }: { game: GameRow }) {
               {conf.label} · {(game.numRatings ?? 0).toLocaleString()} ratings
             </span>
           </div>
-          <div className="mt-1 h-1.5 bg-black/5 rounded-full overflow-hidden">
+          <div className="mt-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
             <div
               className={cn("h-full transition-all", toneClass[conf.tone])}
               style={{ width: `${Math.round(conf.pct * 100)}%` }}
@@ -47,7 +47,7 @@ export function ScoreBreakdown({ game }: { game: GameRow }) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-black/8 bg-bg-soft p-4">
+      <div className="rounded-xl border border-white/5 bg-bg-soft p-4">
         <div className="text-[11px] uppercase tracking-wider text-ink-faint">
           Player consensus
         </div>

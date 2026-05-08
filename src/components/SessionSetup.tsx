@@ -110,7 +110,7 @@ export function SessionSetup({
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-black/8 bg-bg-soft p-4">
+    <div className="mb-6 rounded-xl border border-white/5 bg-bg-soft p-4">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xs uppercase tracking-wider text-ink-faint">
           Tonight&apos;s session
@@ -141,7 +141,7 @@ export function SessionSetup({
                   "px-2.5 py-1 rounded-md text-sm border transition-colors",
                   activePlayers === n
                     ? "bg-accent text-bg border-accent"
-                    : "bg-bg border-black/8 text-ink-dim hover:border-accent/40"
+                    : "bg-bg border-white/5 text-ink-dim hover:border-accent/40"
                 )}
               >
                 {n}
@@ -156,7 +156,7 @@ export function SessionSetup({
                 "px-2.5 py-1 rounded-md text-sm border transition-colors",
                 activePlayers === 7
                   ? "bg-accent text-bg border-accent"
-                  : "bg-bg border-black/8 text-ink-dim hover:border-accent/40"
+                  : "bg-bg border-white/5 text-ink-dim hover:border-accent/40"
               )}
             >
               7+
@@ -179,7 +179,7 @@ export function SessionSetup({
                   "px-2.5 py-1 rounded-md text-sm border transition-colors",
                   activeTime === value
                     ? "bg-accent text-bg border-accent"
-                    : "bg-bg border-black/8 text-ink-dim hover:border-accent/40"
+                    : "bg-bg border-white/5 text-ink-dim hover:border-accent/40"
                 )}
               >
                 {label}
@@ -204,7 +204,7 @@ export function SessionSetup({
                   "px-2.5 py-1 rounded-md text-sm border transition-colors",
                   activeBand === id
                     ? "bg-accent text-bg border-accent"
-                    : "bg-bg border-black/8 text-ink-dim hover:border-accent/40"
+                    : "bg-bg border-white/5 text-ink-dim hover:border-accent/40"
                 )}
               >
                 {label}

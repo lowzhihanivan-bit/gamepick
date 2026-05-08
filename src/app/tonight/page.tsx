@@ -73,7 +73,7 @@ export default async function TonightPage({
       </div>
 
       {rows.length === 0 ? (
-        <div className="rounded-2xl border border-black/8 bg-bg-soft p-10 text-center">
+        <div className="rounded-2xl border border-white/5 bg-bg-soft p-10 text-center">
           <p className="text-lg">No games match your filters.</p>
           <p className="text-ink-dim text-sm mt-2">Try loosening the mood or session settings.</p>
         </div>

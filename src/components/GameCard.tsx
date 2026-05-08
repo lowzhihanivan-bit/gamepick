@@ -24,7 +24,7 @@ export function GameCard({ game }: { game: GameRow }) {
   return (
     <a
       href={`/games/${game.bggId}`}
-      className="group rounded-2xl border border-black/8 bg-bg-card hover:border-accent/40 transition overflow-hidden flex flex-col"
+      className="group rounded-2xl border border-white/5 bg-bg-card hover:border-accent/40 transition overflow-hidden flex flex-col"
     >
       <div className="aspect-[16/10] bg-bg-soft relative overflow-hidden">
         {game.thumbnail ? (
@@ -66,7 +66,7 @@ export function GameCard({ game }: { game: GameRow }) {
           {cats.slice(0, 2).map((c) => (
             <span
               key={c}
-              className="text-[11px] px-2 py-0.5 rounded-full bg-black/5 text-ink-dim"
+              className="text-[11px] px-2 py-0.5 rounded-full bg-white/5 text-ink-dim"
             >
               {c}
             </span>
@@ -81,13 +81,13 @@ export function GameCard({ game }: { game: GameRow }) {
           ))}
         </div>
 
-        <div className="mt-4 pt-3 border-t border-black/8 flex items-center justify-between text-xs">
-          <span className={cn("flex items-center gap-1", toneClass[consensus.tone])}>
+        <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+          <span className={cn("flex items-center gap-1", toneClass[consensus.tone])} title={consensus.tooltip}>
             <Dot tone={consensus.tone} />
             {consensus.label}
           </span>
-          <span className={cn("flex items-center gap-1", toneClass[conf.tone])}>
-            {conf.label} confidence
+          <span className={cn("flex items-center gap-1", toneClass[conf.tone])} title={`${conf.tooltip} (${(game.numRatings ?? 0).toLocaleString()} ratings)`}>
+            {conf.label}
             <span className="text-ink-faint">
               ({(game.numRatings ?? 0).toLocaleString()})
             </span>

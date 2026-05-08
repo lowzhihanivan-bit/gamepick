@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen antialiased">
-        <header className="border-b border-black/8 bg-bg-soft/80 backdrop-blur sticky top-0 z-30">
+        <header className="border-b border-white/5 bg-bg-soft/80 backdrop-blur sticky top-0 z-30">
           <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2">
               <span className="inline-block w-2.5 h-2.5 rounded-sm bg-accent" />

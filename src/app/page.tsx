@@ -107,7 +107,7 @@ function labelForSort(s: FiltersT["sort"]) {
 
 function EmptyState() {
   return (
-    <div className="rounded-2xl border border-black/8 bg-bg-soft p-10 text-center">
+    <div className="rounded-2xl border border-white/5 bg-bg-soft p-10 text-center">
       <p className="text-lg">No games yet.</p>
       <p className="text-ink-dim text-sm mt-2">
         Run <code className="text-accent">npm run db:init</code> then{" "}
