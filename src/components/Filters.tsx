@@ -137,6 +137,7 @@ export function Filters({
           <option value="consensus">Consensus (low variance first)</option>
           <option value="weight">Weight (light → heavy)</option>
           <option value="year">Year (newest first)</option>
+          <option value="year-asc">Year (oldest first)</option>
         </select>
       </FilterBlock>
 

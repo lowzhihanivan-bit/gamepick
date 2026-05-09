@@ -81,6 +81,8 @@ export async function listGames(f: Filters): Promise<{ rows: GameRow[]; total: n
           return "weight ASC NULLS LAST, bayes_avg DESC NULLS LAST";
         case "year":
           return "year_published DESC NULLS LAST, bayes_avg DESC NULLS LAST";
+        case "year-asc":
+          return "year_published ASC NULLS LAST, bayes_avg DESC NULLS LAST";
         case "bayes":
         default:
           return "bayes_avg DESC NULLS LAST, num_ratings DESC NULLS LAST";

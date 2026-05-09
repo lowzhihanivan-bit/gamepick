@@ -100,6 +100,8 @@ function labelForSort(s: FiltersT["sort"]) {
       return "weight (light → heavy)";
     case "year":
       return "year (newest first)";
+    case "year-asc":
+      return "year (oldest first)";
     default:
       return s;
   }
