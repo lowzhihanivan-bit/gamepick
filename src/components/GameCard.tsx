@@ -7,6 +7,7 @@ import {
   confidenceFromVotes,
 } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { WishlistButton } from "@/components/WishlistButton";
 
 const toneClass: Record<"ok" | "warn" | "bad" | "ink-dim", string> = {
   ok: "text-ok",
@@ -41,6 +42,7 @@ export function GameCard({ game }: { game: GameRow }) {
             no image
           </div>
         )}
+        <WishlistButton bggId={game.bggId} />
         <div className="absolute top-2 right-2 px-2 py-1 rounded-md bg-black/60 backdrop-blur text-white text-xs font-mono">
           {fmtScore(game.bayesAvg ?? game.rawAvg)}
         </div>
