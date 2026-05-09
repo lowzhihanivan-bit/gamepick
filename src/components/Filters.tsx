@@ -276,14 +276,14 @@ function ChipList({
           key={name}
           onClick={() => onToggle(name)}
           className={cn(
-            "px-2 py-0.5 rounded-full text-xs border",
+            "px-2 py-0.5 rounded-full text-xs border transition-colors",
             selected.has(name)
               ? "bg-accent text-bg border-accent"
-              : "bg-bg-soft border-white/5 text-ink-dim hover:border-accent/40"
+              : "bg-bg border-white/10 text-ink hover:border-accent/50 hover:text-ink"
           )}
         >
           {name}
-          <span className="ml-1 text-[10px] opacity-60">{count}</span>
+          <span className="ml-1 text-[10px] text-ink-dim">{count}</span>
         </button>
       ))}
     </div>
