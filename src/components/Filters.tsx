@@ -31,20 +31,29 @@ export function Filters({
   const [mechs, setMechs] = useState<Set<string>>(new Set(initial.mechanics ?? []));
   const [sort, setSort] = useState<FiltersT["sort"]>(initial.sort);
 
-  function apply(extra?: Partial<Record<string, string>>) {
+  function apply(overrides?: {
+    cats?: Set<string>;
+    mechs?: Set<string>;
+    players?: number | "";
+    maxTime?: number | "";
+  }) {
+    const effectiveCats = overrides?.cats ?? cats;
+    const effectiveMechs = overrides?.mechs ?? mechs;
+    const effectivePlayers = overrides?.players !== undefined ? overrides.players : players;
+    const effectiveMaxTime = overrides?.maxTime !== undefined ? overrides.maxTime : maxTime;
+
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     if (minWeight !== facets.weightRange.min) params.set("minWeight", String(minWeight));
     if (maxWeight !== facets.weightRange.max) params.set("maxWeight", String(maxWeight));
-    if (players !== "") {
-      params.set("minPlayers", String(players));
-      params.set("maxPlayers", String(players));
+    if (effectivePlayers !== "") {
+      params.set("minPlayers", String(effectivePlayers));
+      params.set("maxPlayers", String(effectivePlayers));
     }
-    if (maxTime !== "") params.set("maxTime", String(maxTime));
-    if (cats.size) params.set("cat", [...cats].join(","));
-    if (mechs.size) params.set("mech", [...mechs].join(","));
+    if (effectiveMaxTime !== "") params.set("maxTime", String(effectiveMaxTime));
+    if (effectiveCats.size) params.set("cat", [...effectiveCats].join(","));
+    if (effectiveMechs.size) params.set("mech", [...effectiveMechs].join(","));
     if (sort !== "bayes") params.set("sort", String(sort));
-    if (extra) for (const [k, v] of Object.entries(extra)) v ? params.set(k, v) : params.delete(k);
     startTransition(() => router.push(`/?${params.toString()}`));
   }
 
@@ -174,7 +183,7 @@ export function Filters({
               onClick={() => {
                 const next = players === n ? "" : n;
                 setPlayers(next);
-                setTimeout(apply, 0);
+                apply({ players: next });
               }}
               className={cn(
                 "px-2.5 py-1 rounded-md text-sm border",
@@ -198,7 +207,7 @@ export function Filters({
               onClick={() => {
                 const next = maxTime === n ? "" : n;
                 setMaxTime(next);
-                setTimeout(apply, 0);
+                apply({ maxTime: next });
               }}
               className={cn(
                 "px-2.5 py-1 rounded-md text-sm border",
@@ -221,7 +230,7 @@ export function Filters({
             const next = new Set(cats);
             next.has(name) ? next.delete(name) : next.add(name);
             setCats(next);
-            setTimeout(apply, 0);
+            apply({ cats: next });
           }}
         />
       </FilterBlock>
@@ -234,7 +243,7 @@ export function Filters({
             const next = new Set(mechs);
             next.has(name) ? next.delete(name) : next.add(name);
             setMechs(next);
-            setTimeout(apply, 0);
+            apply({ mechs: next });
           }}
         />
       </FilterBlock>
