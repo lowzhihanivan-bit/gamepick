@@ -66,6 +66,17 @@ export const MOODS: {
 
 export const MOOD_MAP = new Map(MOODS.map((m) => [m.id, m]));
 
+/** Combines multiple moods with OR. */
+export function moodsToSql(moods: string[]): { sql: string; params: Record<string, string | number> } | null {
+  const parts = moods.map((m) => moodToSql(m)).filter(Boolean) as { sql: string; params: Record<string, string | number> }[];
+  if (!parts.length) return null;
+  if (parts.length === 1) return parts[0];
+  return {
+    sql: parts.map((p) => `(${p.sql})`).join(" OR "),
+    params: Object.assign({}, ...parts.map((p) => p.params)),
+  };
+}
+
 /** Returns a SQL fragment (no leading AND) + named params for a given mood. */
 export function moodToSql(mood: string): {
   sql: string;

@@ -14,9 +14,10 @@ function parseSearch(sp: Record<string, string | string[] | undefined>): Filters
     const n = s ? Number(s) : NaN;
     return Number.isFinite(n) ? n : undefined;
   };
-  const str = (k: string) => {
+  const list = (k: string) => {
     const v = sp[k];
-    return Array.isArray(v) ? v[0] : v;
+    const s = Array.isArray(v) ? v.join(",") : v;
+    return s ? s.split(",").filter(Boolean) : [];
   };
   return {
     minPlayers: num("minPlayers"),
@@ -25,7 +26,7 @@ function parseSearch(sp: Record<string, string | string[] | undefined>): Filters
     maxTime: num("maxTime"),
     minWeight: num("minWeight"),
     maxWeight: num("maxWeight"),
-    mood: str("mood"),
+    moods: list("mood"),
     sort: "match",
     page: num("page") ?? 1,
   };
@@ -63,7 +64,7 @@ export default async function TonightPage({
         initialMaxWeight={filters.maxWeight}
       />
 
-      <MoodPicker activeMood={filters.mood} />
+      <MoodPicker activeMoods={filters.moods} />
 
       <div className="flex items-baseline justify-between mb-4">
         <p className="text-sm text-ink-dim">

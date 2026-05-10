@@ -32,7 +32,7 @@ function parseSearch(sp: Record<string, string | string[] | undefined>): Filters
     maxTime: num("maxTime"),
     categories: list("cat"),
     mechanics: list("mech"),
-    mood: str("mood"),
+    moods: list("mood"),
     sort: (str("sort") as FiltersT["sort"]) ?? "bayes",
     page: num("page") ?? 1,
   };

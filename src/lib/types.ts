@@ -10,7 +10,7 @@ export type Filters = {
   maxTime?: number;
   categories?: string[];
   mechanics?: string[];
-  mood?: string;
+  moods?: string[];
   sort: SortKey;
   page: number;
 };

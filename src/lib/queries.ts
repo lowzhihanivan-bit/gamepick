@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/db/client";
 import type { Filters, Facets, GameRow } from "./types";
-import { moodToSql } from "./moods";
+import { moodsToSql } from "./moods";
 import type { InValue } from "@libsql/client";
 
 const PAGE_SIZE = 30;
@@ -50,8 +50,8 @@ export async function listGames(f: Filters): Promise<{ rows: GameRow[]; total: n
       params[`mech${i}`] = `%"${escapeLike(m)}"%`;
     });
   }
-  if (f.mood) {
-    const ms = moodToSql(f.mood);
+  if (f.moods && f.moods.length) {
+    const ms = moodsToSql(f.moods);
     if (ms) {
       where.push(`(${ms.sql})`);
       Object.assign(params, ms.params);
