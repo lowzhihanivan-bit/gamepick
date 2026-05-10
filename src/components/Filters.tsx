@@ -134,7 +134,7 @@ export function Filters({
           className="w-full rounded-lg bg-bg-soft border border-white/5 px-3 py-2 text-sm"
         >
           <option value="bayes">Bayesian rating</option>
-          <option value="consensus">Consensus (low variance first)</option>
+          <option value="consensus">Most agreed upon</option>
           <option value="weight">Weight (light → heavy)</option>
           <option value="year">Year (newest first)</option>
           <option value="year-asc">Year (oldest first)</option>

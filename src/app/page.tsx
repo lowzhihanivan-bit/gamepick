@@ -95,7 +95,7 @@ function labelForSort(s: FiltersT["sort"]) {
     case "bayes":
       return "Bayesian rating";
     case "consensus":
-      return "consensus (low variance first)";
+      return "most agreed upon";
     case "weight":
       return "weight (light → heavy)";
     case "year":
