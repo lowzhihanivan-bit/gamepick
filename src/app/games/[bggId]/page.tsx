@@ -10,6 +10,8 @@ import {
 } from "@/lib/format";
 import { ScoreBreakdown } from "@/components/ScoreBreakdown";
 import { WhyForYou } from "@/components/WhyForYou";
+import { GameReviews } from "@/components/GameReviews";
+import { GameImageGallery } from "@/components/GameImageGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -30,12 +32,7 @@ export default async function GamePage({
   return (
     <article className="grid grid-cols-12 gap-6">
       <div className="col-span-12 md:col-span-5">
-        <div className="aspect-square rounded-2xl overflow-hidden bg-bg-soft border border-white/5">
-          {game.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={game.image} alt={game.name} className="w-full h-full object-cover" />
-          ) : null}
-        </div>
+        <GameImageGallery bggId={game.bggId} mainImage={game.image} />
         <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
           <Stat label="Players" value={fmtPlayers(game.minPlayers, game.maxPlayers)} />
           {fmtBestPlayers(game.bestPlayersMin, game.bestPlayersMax) && (
@@ -142,6 +139,13 @@ export default async function GamePage({
             </p>
           </section>
         ) : null}
+
+        <section className="mt-8">
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-4">
+            Player Reviews
+          </h2>
+          <GameReviews bggId={game.bggId} />
+        </section>
       </div>
     </article>
   );
