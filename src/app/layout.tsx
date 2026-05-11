@@ -23,7 +23,7 @@ export default function RootLayout({
             </a>
             <nav className="text-sm text-ink-dim flex gap-5">
               <a href="/" className="hover:text-ink">Browse</a>
-              <a href="/tonight" className="hover:text-ink">Find a Game</a>
+              <a href="/tonight" className="hover:text-ink">Session Matcher</a>
               <a href="/wishlist" className="hover:text-ink">★ Wishlist</a>
               <a href="/about" className="hover:text-ink">About</a>
             </nav>

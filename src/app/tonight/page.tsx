@@ -51,7 +51,7 @@ export default async function TonightPage({
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight mb-1">Find a Game</h1>
+        <h1 className="text-2xl font-semibold tracking-tight mb-1">Session Matcher</h1>
         <p className="text-sm text-ink-dim">
           Tell us your players, time, and mood — we&apos;ll rank games by how well they fit.
         </p>

@@ -1,3 +1,10 @@
+export function fmtBestPlayers(min: number | null, max: number | null): string | null {
+  if (min == null && max == null) return null;
+  if (min === max || max == null) return `Best at ${min}`;
+  if (min == null) return `Best at ${max}`;
+  return `Best at ${min}–${max}`;
+}
+
 export function fmtPlayers(min: number | null, max: number | null) {
   if (min == null && max == null) return "—";
   if (min === max || max == null) return `${min}`;

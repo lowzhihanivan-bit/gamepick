@@ -25,6 +25,8 @@ export type GameRow = {
   description: string | null;
   minPlayers: number | null;
   maxPlayers: number | null;
+  bestPlayersMin: number | null;
+  bestPlayersMax: number | null;
   minPlaytime: number | null;
   maxPlaytime: number | null;
   minAge: number | null;

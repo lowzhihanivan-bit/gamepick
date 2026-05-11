@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS games (
   description TEXT,
   min_players INTEGER,
   max_players INTEGER,
+  best_players_min INTEGER,
+  best_players_max INTEGER,
   min_playtime INTEGER,
   max_playtime INTEGER,
   min_age INTEGER,

@@ -1,6 +1,7 @@
 import type { GameRow } from "@/lib/types";
 import {
   fmtPlayers,
+  fmtBestPlayers,
   fmtTime,
   weightLabel,
   consensusLabel,
@@ -59,9 +60,10 @@ export function GameCard({ game }: { game: GameRow }) {
         </div>
 
         <p className="mt-1 text-xs text-ink-dim">
-          {fmtPlayers(game.minPlayers, game.maxPlayers)} players ·{" "}
-          {fmtTime(game.minPlaytime, game.maxPlaytime)} ·{" "}
-          {weightLabel(game.weight)}
+          {fmtPlayers(game.minPlayers, game.maxPlayers)} players
+          {fmtBestPlayers(game.bestPlayersMin, game.bestPlayersMax) && (
+            <span className="text-accent/80"> · {fmtBestPlayers(game.bestPlayersMin, game.bestPlayersMax)}</span>
+          )} · {fmtTime(game.minPlaytime, game.maxPlaytime)} · {weightLabel(game.weight)}
         </p>
 
         <div className="mt-3 flex flex-wrap gap-1.5">

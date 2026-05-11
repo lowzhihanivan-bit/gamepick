@@ -2,6 +2,7 @@ import { getGameByBggId } from "@/lib/queries";
 import { notFound } from "next/navigation";
 import {
   fmtPlayers,
+  fmtBestPlayers,
   fmtTime,
   weightLabel,
   consensusLabel,
@@ -37,6 +38,9 @@ export default async function GamePage({
         </div>
         <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
           <Stat label="Players" value={fmtPlayers(game.minPlayers, game.maxPlayers)} />
+          {fmtBestPlayers(game.bestPlayersMin, game.bestPlayersMax) && (
+            <Stat label="Sweet spot" value={fmtBestPlayers(game.bestPlayersMin, game.bestPlayersMax)!} />
+          )}
           <Stat label="Length" value={fmtTime(game.minPlaytime, game.maxPlaytime)} />
           <Stat label="Weight" value={`${weightLabel(game.weight)}${game.weight ? ` (${game.weight.toFixed(1)})` : ""}`} />
         </div>

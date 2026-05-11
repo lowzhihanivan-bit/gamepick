@@ -71,12 +71,13 @@ async function main() {
   const upsert = db.prepare(`
     INSERT INTO games (
       bgg_id, name, year_published, thumbnail, image, description,
-      min_players, max_players, min_playtime, max_playtime, min_age,
+      min_players, max_players, best_players_min, best_players_max,
+      min_playtime, max_playtime, min_age,
       weight, bgg_rank, raw_avg, num_ratings,
       categories_json, mechanics_json, histogram_json, fetched_at
     ) VALUES (
       @bggId, @name, @year, @thumb, @image, @desc,
-      @minP, @maxP, @minT, @maxT, @minAge,
+      @minP, @maxP, @bestMinP, @bestMaxP, @minT, @maxT, @minAge,
       @weight, @rank, @rawAvg, @numRatings,
       @cats, @mechs, @hist, @ts
     )
@@ -88,6 +89,8 @@ async function main() {
       description=excluded.description,
       min_players=excluded.min_players,
       max_players=excluded.max_players,
+      best_players_min=excluded.best_players_min,
+      best_players_max=excluded.best_players_max,
       min_playtime=excluded.min_playtime,
       max_playtime=excluded.max_playtime,
       min_age=excluded.min_age,
@@ -127,6 +130,8 @@ async function main() {
           desc: z(g.description),
           minP: z(g.min_players),
           maxP: z(g.max_players),
+          bestMinP: z(g.min_players_best),
+          bestMaxP: z(g.max_players_best),
           minT: z(g.min_time),
           maxT: z(g.max_time),
           minAge: z(g.min_age),

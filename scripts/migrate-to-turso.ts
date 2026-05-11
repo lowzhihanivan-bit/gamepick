@@ -30,6 +30,14 @@ async function main() {
     await remote.execute(stmt);
   }
 
+  // Add new columns if they don't exist yet (idempotent)
+  for (const col of [
+    "ALTER TABLE games ADD COLUMN best_players_min INTEGER",
+    "ALTER TABLE games ADD COLUMN best_players_max INTEGER",
+  ]) {
+    try { await remote.execute(col); } catch { /* already exists */ }
+  }
+
   const rows = local.prepare("SELECT * FROM games").all() as Row[];
   console.log(`Migrating ${rows.length} rows...`);
 
@@ -39,13 +47,15 @@ async function main() {
       batch.map((r) => ({
         sql: `INSERT OR REPLACE INTO games (
           id, bgg_id, name, year_published, thumbnail, image, description,
-          min_players, max_players, min_playtime, max_playtime, min_age,
+          min_players, max_players, best_players_min, best_players_max,
+          min_playtime, max_playtime, min_age,
           weight, bgg_rank, raw_avg, num_ratings, bayes_avg, consensus,
           cohort_label, cohort_percentile, categories_json, mechanics_json,
           histogram_json, strengths_json, weaknesses_json, fetched_at
         ) VALUES (
           :id, :bgg_id, :name, :year_published, :thumbnail, :image, :description,
-          :min_players, :max_players, :min_playtime, :max_playtime, :min_age,
+          :min_players, :max_players, :best_players_min, :best_players_max,
+          :min_playtime, :max_playtime, :min_age,
           :weight, :bgg_rank, :raw_avg, :num_ratings, :bayes_avg, :consensus,
           :cohort_label, :cohort_percentile, :categories_json, :mechanics_json,
           :histogram_json, :strengths_json, :weaknesses_json, :fetched_at
