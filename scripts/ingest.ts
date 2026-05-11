@@ -16,7 +16,7 @@ import path from "node:path";
 import fs from "node:fs";
 import { CREATE_GAMES_SQL } from "../src/db/schema";
 
-const TARGET = Number(process.env.TARGET ?? 3000);
+const TARGET = Number(process.env.TARGET ?? 4000);
 const DB_PATH = path.join(process.cwd(), "data", "boardgames.sqlite");
 const REQ_DELAY_MS = 250;
 
