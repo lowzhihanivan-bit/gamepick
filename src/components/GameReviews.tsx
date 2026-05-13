@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Review } from "@/app/api/bgg-reviews/[bggId]/route";
+type Review = { username: string; rating: number | null; text: string };
 
 export function GameReviews({ bggId }: { bggId: number }) {
   const [reviews, setReviews] = useState<Review[]>([]);

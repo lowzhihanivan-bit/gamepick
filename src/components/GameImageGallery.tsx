@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { BggImage } from "@/app/api/bgg-images/[bggId]/route";
+type BggImage = { url: string; thumbnail: string };
 
 export function GameImageGallery({
   bggId,

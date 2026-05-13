@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 
-export type BggImage = { url: string; thumbnail: string };
+type BggImage = { url: string; thumbnail: string };
 
 async function _fetchImages(bggId: string): Promise<BggImage[]> {
   const headers: Record<string, string> = { "User-Agent": "GamePick/1.0" };

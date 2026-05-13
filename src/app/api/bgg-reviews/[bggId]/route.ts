@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 
-export type Review = {
+type Review = {
   username: string;
   rating: number | null;
   text: string;
